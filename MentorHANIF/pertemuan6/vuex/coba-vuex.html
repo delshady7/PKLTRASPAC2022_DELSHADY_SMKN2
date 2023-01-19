@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1> {{$store.state.count}} </h1>
+        <p>State Management Pattern</p>
+        <button @click="increment">Klik</button>
+    </div>
+    <script src=""></script>
+    <script src=""></script>
+
+
+    <script>
+        const store = new Vuex.Store ({
+            state: {
+                count: 0,
+                title: 'Belajar-Vuex',
+            },
+            mutation: {
+            },
+            action: {
+            }
+        })
+        new Vue({
+            el: '#app',
+            data: {
+                
+            },
+            store,
+            methods: {
+                increment(){
+                    this.$store.state.count++
+                }
+            }
+        })
+
+    </script>
+
+
+
+
+
+</body>
+</html>
