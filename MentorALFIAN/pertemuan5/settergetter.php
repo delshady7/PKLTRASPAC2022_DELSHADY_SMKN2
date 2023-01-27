@@ -12,52 +12,52 @@ class Entertainment
         $this->genre = $status;
     }
     //Magic Method __get
-    public function __get($property)
-    {
-        if (property_exists($this, $property)){
-            return $this->$property;
-        }
-    }
+    // public function __get($property)
+    // {
+    //     if (property_exists($this, $property)){
+    //         return $this->$property;
+    //     }
+    // }
 
-    // public function setJudul($judulbaru)
-    // {
-    //     $this->judul = $judulbaru;
-    // }
-    // public function getJudul()
-    // {
-    //     return $this->judul;
-    // }
-    // public function setPemeran($pemeranbaru)
-    // {
-    //     $this->pemeran = $pemeranbaru;
-    // }
-    // public function getPemeran()
-    // {
-    //     return $this->pemeran;
-    // }
-    // public function setHarga($hargabaru)
-    // {
-    //     $this->harga = $hargabaru;
-    // }
-    // public function getHarga()
-    // {
-    //     return $this->harga;
-    // }
-    // public function setGenre($genrebaru)
-    // {
-    //     $this->genre = $genrebaru;
-    // }
-    // public function getGenre()
-    // {
-    //     return $this->genre;
-    // }
+    public function setJudul($judulbaru)
+    {
+        $this->judul = $judulbaru;
+    }
+    public function getJudul()
+    {
+        return $this->judul;
+    }
+    public function setPemeran($pemeranbaru)
+    {
+        $this->pemeran = $pemeranbaru;
+    }
+    public function getPemeran()
+    {
+        return $this->pemeran;
+    }
+    public function setHarga($hargabaru)
+    {
+        $this->harga = $hargabaru;
+    }
+    public function getHarga()
+    {
+        return $this->harga;
+    }
+    public function setGenre($genrebaru)
+    {
+        $this->genre = $genrebaru;
+    }
+    public function getGenre()
+    {
+        return $this->genre;
+    }
 
 }
 
 $komik = new Entertainment("Questism", "Kim Soohyun", 14, "Drama");
 
-echo $komik->__get('judul');
-echo "<br>";
+$komik->setJudul("Judul Baru");
+echo $komik->getJudul();
 
 
 
