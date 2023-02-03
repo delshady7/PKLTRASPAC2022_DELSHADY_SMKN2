@@ -10,6 +10,16 @@
       </div>
     </div>
     <div class="content">
+      <v-toolbar style="width: 700px; margin-left: 330px; margin-top: -70px">
+        <v-text-field
+          v-model="cari"
+          placeholder="Search a Product"
+          style="border-radius: 56px"
+        ></v-text-field>
+        <v-btn @click="searchData(cari)" icon>
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+      </v-toolbar>
       <v-simple-table fixed-header height="500px" data-app>
         <template v-slot:top>
           <v-dialog v-model="dialog">
@@ -63,27 +73,10 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogRemove" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h5"
-                >Are you sure you want to delete this item?</v-card-title
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeRemove"
-                  >Cancel</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="removeConfirm"
-                  >OK</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
         </template>
         <thead>
           <tr>
-            <th class="text-left">Thumbnail</th>
+            <th class="text-left">Product Photo's</th>
             <th class="text-left">Title</th>
             <th class="text-left">Price</th>
             <th class="text-left">Description</th>
@@ -131,20 +124,15 @@
   </div>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "IndexPage",
   data: () => ({
     dataproducts: [],
+    cari: null,
     dialog: false,
-    dialogRemove: false,
     editedIndex: -1,
     editedItem: {
-      //   thumbnail: "",
-      title: "",
-      price: 0,
-      description: "",
-    },
-    defaultItem: {
       //   thumbnail: "",
       title: "",
       price: 0,
@@ -167,11 +155,14 @@ export default {
     remove(item) {
       this.editedIndex = this.dataproducts.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.dialogRemove = true;
+      this.$store.dispatch("produk/removeData", item);
+      // this.get();
+      this.$store.dispatch("produk/getData");
+      this.closeRemove();
+      // this.dialogRemove = true;
     },
     removeConfirm() {
-      this.dataproducts.splice(this.editedIndex, 1);
-      this.closeRemove();
+      // this.dataproducts.splice(this.editedIndex, 1);
     },
     closeRemove() {
       this.dialogRemove = false;
@@ -182,21 +173,28 @@ export default {
     },
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.dataproducts[this.editedIndex], this.editedItem);
+        Object.assign(
+          this.dataproducts[this.editedIndex],
+          this.$store.dispatch("produk/updateData", this.editedItem)
+        );
+        this.get();
       } else {
-        this.dataproducts.push(this.editedItem);
+        // this.dataproducts.push(this.editedItem);
+        this.$store.dispatch("produk/addData", this.editedItem);
+        // this.$store.dispatch("produk/getData");
       }
       this.close();
     },
+    ...mapActions("produk", ["searchData"]),
   },
   computed: {
     get() {
-      this.dataproducts = this.$store.state.produk.product;
       return this.$store.state.produk.product;
     },
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
+    ...mapGetters(["search"]),
   },
   watch: {
     dialog(val) {
@@ -208,6 +206,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("produk/getData");
+    this.dataproducts = this.$store.state.produk.product;
   },
 };
 </script>
@@ -217,7 +216,7 @@ export default {
   margin-left: 17px;
 }
 .button-add {
-  margin-top: -108px;
+  margin-top: -111px;
   margin-left: 1170px;
 }
 .content {
